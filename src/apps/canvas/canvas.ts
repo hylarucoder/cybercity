@@ -1,26 +1,26 @@
 import * as Joi from "joi";
-import { ALL_TEMPLATES } from "./services/template";
-import { drawArtboard } from "./services/artboard";
+import { ALL_TEMPLATES } from "../../service/services/template";
+import { drawArtboard } from "../../service/services/artboard";
 import { Readable } from "stream";
 import { cloneDeep } from "lodash";
 import {
   genCardAchievementContinuousDays,
   genCardAchievementSocial,
-  genCardAchievementSolarTerms
-} from "./artboard/templates/achievement";
-import { genCardRemedy } from "./artboard/templates/remedy";
-import { genCardShare } from "./artboard/templates/share";
-import { genCardRegiment } from "./artboard/templates/regiment";
-import { genCardTeam } from "./artboard/templates/team";
-import { drawCardPunch_P1_001 } from "./artboard/templates/punch/P1_001";
-import { drawCardPunch_P2_001 } from "./artboard/templates/punch/P2_001";
-import { tmpls } from "./artboard/templates";
-import { drawCardPunch_P3_001 } from "./artboard/templates/punch/P3_001";
-import { drawCardPunch_P3_002 } from "./artboard/templates/punch/P3_002";
-import { drawCardPunch_P3_003 } from "./artboard/templates/punch/P3_003";
-import { drawCardPunch_P3_004 } from "./artboard/templates/punch/P3_004";
-import { drawCardPunch_P3_005 } from "./artboard/templates/punch/P3_005";
-import { drawCardPunch_P3_006 } from "./artboard/templates/punch/P3_006";
+  genCardAchievementSolarTerms,
+} from "../../service/artboard/templates/achievement";
+import { genCardRemedy } from "../../service/artboard/templates/remedy";
+import { genCardShare } from "../../service/artboard/templates/share";
+import { genCardRegiment } from "../../service/artboard/templates/regiment";
+import { genCardTeam } from "../../service/artboard/templates/team";
+import { drawCardPunch_P1_001 } from "../../service/artboard/templates/punch/P1_001";
+import { drawCardPunch_P2_001 } from "../../service/artboard/templates/punch/P2_001";
+import { tmpls } from "../../service/artboard/templates";
+import { drawCardPunch_P3_001 } from "../../service/artboard/templates/punch/P3_001";
+import { drawCardPunch_P3_002 } from "../../service/artboard/templates/punch/P3_002";
+import { drawCardPunch_P3_003 } from "../../service/artboard/templates/punch/P3_003";
+import { drawCardPunch_P3_004 } from "../../service/artboard/templates/punch/P3_004";
+import { drawCardPunch_P3_005 } from "../../service/artboard/templates/punch/P3_005";
+import { drawCardPunch_P3_006 } from "../../service/artboard/templates/punch/P3_006";
 
 export function makeArtboard(template, content) {
   let newTmpl = Object.assign({}, template);
@@ -46,7 +46,7 @@ export function bufferToStream(binary) {
     read() {
       this.push(binary);
       this.push(null);
-    }
+    },
   });
 }
 
@@ -74,9 +74,9 @@ export default [
       description: "原生绘图 - 用于直接传artboard",
       validate: {
         payload: Joi.object({
-          artboard: Joi.object()
-        })
-      }
+          artboard: Joi.object(),
+        }),
+      },
     },
     handler: async (request, h) => {
       try {
@@ -90,7 +90,7 @@ export default [
         request.sentryScope.setExtra("生成图片失败", request.payload);
         throw error;
       }
-    }
+    },
   },
   {
     method: "POST",
@@ -100,9 +100,9 @@ export default [
       validate: {
         payload: Joi.object({
           tmpl: Joi.string(),
-          content: Joi.object()
-        })
-      }
+          content: Joi.object(),
+        }),
+      },
     },
     handler: async (request, h) => {
       try {
@@ -126,7 +126,7 @@ export default [
         request.sentryScope.setExtra("生成图片失败", request.payload);
         throw error;
       }
-    }
+    },
   },
   {
     method: "GET",
@@ -135,9 +135,9 @@ export default [
       description: "模板绘图 - 用于调试预览数据",
       validate: {
         query: Joi.object({
-          tmpl: Joi.string().default("TMPL_ACHIEVEMENT_SOCIAL")
-        }).options({ stripUnknown: true })
-      }
+          tmpl: Joi.string().default("TMPL_ACHIEVEMENT_SOCIAL"),
+        }).options({ stripUnknown: true }),
+      },
     },
     handler: async (request, h) => {
       let content = {
@@ -153,7 +153,7 @@ export default [
         punchTime: "12:40",
         join: "799398421人正在参与",
         earlierThan: "比1万人起的早",
-        beautifulWordsPart: "不管多么崎岖不平"
+        beautifulWordsPart: "不管多么崎岖不平",
         //  beautifulWordsPart2: '也比站在原地更接近幸福',
       };
       let template = getTemplate(request.query.tmpl);
@@ -161,115 +161,114 @@ export default [
       let artboard = makeArtboard(template, content);
       let b64 = await drawArtboard(artboard);
       return `<img src="${b64}">`;
-    }
+    },
   },
   {
     method: "GET",
     path: "/api/canvas/beta",
     config: {
-      description: "模板绘图 - 用于调试Component"
+      description: "模板绘图 - 用于调试Component",
     },
     handler: async (request, h) => {
       let b64 = (await drawCardPunch_P3_005()).toBase64();
       return h.view("canvas_beta", {
         b64: b64,
         width: 1024,
-        height: 1024
+        height: 1024,
       });
-    }
+    },
   },
   {
     method: "GET",
     path: "/api/canvas/beta/preview",
     config: {
-      description: "模板绘图 - 用于预览所有图片"
+      description: "模板绘图 - 用于预览所有图片",
     },
     handler: async (request, h) => {
       return h.view("canvas_beta_preview", {
-          artboards: [
-            {
-              b64: (await drawCardPunch_P1_001()).toBase64(),
-              title: "打卡图-v1-白天模式",
-              desc: 1024
-            },
-            {
-              b64: (await drawCardPunch_P2_001()).toBase64(),
-              title: "打卡图-v2-白天模式",
-              desc: 1024
-            },
-            {
-              b64: (await drawCardPunch_P2_001()).toBase64(),
-              title: "打卡图-v2-夜间模式",
-              desc: 1024
-            },
-            {
-              b64: (await drawCardPunch_P3_001()).toBase64(),
-              title: "打卡图-v3-p1",
-              desc: 1024
-            },
-            {
-              b64: (await drawCardPunch_P3_002()).toBase64(),
-              title: "打卡图-v3-p2",
-              desc: 1024
-            },
-            {
-              b64: (await drawCardPunch_P3_003()).toBase64(),
-              title: "打卡图-v3-p3",
-              desc: 1024
-            },
-            {
-              b64: (await drawCardPunch_P3_004()).toBase64(),
-              title: "打卡图-v3-p4",
-              desc: 1024
-            },
-            {
-              b64: (await drawCardPunch_P3_005()).toBase64(),
-              title: "打卡图-v3-p5",
-              desc: 1024
-            },
-            {
-              b64: (await drawCardPunch_P3_006()).toBase64(),
-              title: "打卡图-v3-p6",
-              desc: 1024
-            },
-            {
-              b64: (await genCardShare()).toBase64(),
-              title: "分享卡",
-              desc: 1024
-            },
-            {
-              b64: (await genCardRemedy()).toBase64(),
-              title: "补签卡",
-              desc: 1024
-            },
-            {
-              b64: (await genCardAchievementSocial()).toBase64(),
-              title: "成就图-社交类",
-              desc: 1024
-            },
-            {
-              b64: (await genCardAchievementContinuousDays()).toBase64(),
-              title: "成就图-连续天数",
-              desc: 1024
-            },
-            {
-              b64: (await genCardAchievementSolarTerms()).toBase64(),
-              title: "成就图-节气类",
-              desc: 1024
-            },
-            {
-              b64: (await genCardRegiment()).toBase64(),
-              title: "邀请图-打卡团",
-              desc: 1024
-            },
-            {
-              b64: (await genCardTeam()).toBase64(),
-              title: "邀请图-打卡小分队",
-              desc: 1024
-            }
-          ]
-        }
-      );
-    }
-  }
+        artboards: [
+          {
+            b64: (await drawCardPunch_P1_001()).toBase64(),
+            title: "打卡图-v1-白天模式",
+            desc: 1024,
+          },
+          {
+            b64: (await drawCardPunch_P2_001()).toBase64(),
+            title: "打卡图-v2-白天模式",
+            desc: 1024,
+          },
+          {
+            b64: (await drawCardPunch_P2_001()).toBase64(),
+            title: "打卡图-v2-夜间模式",
+            desc: 1024,
+          },
+          {
+            b64: (await drawCardPunch_P3_001()).toBase64(),
+            title: "打卡图-v3-p1",
+            desc: 1024,
+          },
+          {
+            b64: (await drawCardPunch_P3_002()).toBase64(),
+            title: "打卡图-v3-p2",
+            desc: 1024,
+          },
+          {
+            b64: (await drawCardPunch_P3_003()).toBase64(),
+            title: "打卡图-v3-p3",
+            desc: 1024,
+          },
+          {
+            b64: (await drawCardPunch_P3_004()).toBase64(),
+            title: "打卡图-v3-p4",
+            desc: 1024,
+          },
+          {
+            b64: (await drawCardPunch_P3_005()).toBase64(),
+            title: "打卡图-v3-p5",
+            desc: 1024,
+          },
+          {
+            b64: (await drawCardPunch_P3_006()).toBase64(),
+            title: "打卡图-v3-p6",
+            desc: 1024,
+          },
+          {
+            b64: (await genCardShare()).toBase64(),
+            title: "分享卡",
+            desc: 1024,
+          },
+          {
+            b64: (await genCardRemedy()).toBase64(),
+            title: "补签卡",
+            desc: 1024,
+          },
+          {
+            b64: (await genCardAchievementSocial()).toBase64(),
+            title: "成就图-社交类",
+            desc: 1024,
+          },
+          {
+            b64: (await genCardAchievementContinuousDays()).toBase64(),
+            title: "成就图-连续天数",
+            desc: 1024,
+          },
+          {
+            b64: (await genCardAchievementSolarTerms()).toBase64(),
+            title: "成就图-节气类",
+            desc: 1024,
+          },
+          {
+            b64: (await genCardRegiment()).toBase64(),
+            title: "邀请图-打卡团",
+            desc: 1024,
+          },
+          {
+            b64: (await genCardTeam()).toBase64(),
+            title: "邀请图-打卡小分队",
+            desc: 1024,
+          },
+        ],
+      });
+    },
+  },
 ];
