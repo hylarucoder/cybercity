@@ -1,5 +1,5 @@
 // 打卡团
-import { Artboard, CImage, DLine, DRect, DText } from "../components";
+import { Artboard, CImage, DLine, DRect, DText } from "../../../utils/canvas/components";
 import { defaultParams } from "./teamParams";
 
 export async function genCardRegiment(

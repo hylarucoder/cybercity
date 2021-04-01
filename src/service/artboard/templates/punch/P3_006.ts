@@ -5,7 +5,7 @@ import {
   DRect,
   DText,
   HTransform,
-} from "../../components";
+} from "../../../../utils/canvas/components";
 import { defaultParams } from "./base";
 import { humanizeMonth } from "../../../../utils/time";
 

@@ -1,5 +1,5 @@
 // 邀请图
-import { Artboard, CImage, DText } from "../components";
+import { Artboard, CImage, DText } from "../../../utils/canvas/components";
 import { defaultParams } from "./shareParams";
 export async function genCardShare(
   params: typeof defaultParams = defaultParams,

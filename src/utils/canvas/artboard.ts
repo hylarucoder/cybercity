@@ -5,7 +5,7 @@ import * as assert from "assert";
 
 process.env.PANGOCAIRO_BACKEND = "fontconfig";
 
-let fontPath = __dirname + "../../../../../assets/fonts";
+let fontPath = __dirname + "../../../../assets/fonts";
 
 registerFont(`${fontPath}/PingFang-SC-Regular.ttf`, {
   family: "PingFang SC",

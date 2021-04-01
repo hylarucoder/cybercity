@@ -1,5 +1,5 @@
 // 补签卡
-import { Artboard, CImage, DText } from "../components";
+import { Artboard, CImage, DText } from "../../../utils/canvas/components";
 import { defaultParams } from "./remedyParams";
 export async function genCardRemedy(
   params: typeof defaultParams = defaultParams,

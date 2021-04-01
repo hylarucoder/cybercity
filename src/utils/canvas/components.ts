@@ -4,7 +4,7 @@ import {
   selectCircleRange,
   selectShapeRadius,
 } from "./utils";
-import { initialCanvas, loadImageHelper } from "../../utils/canvas_helper";
+import { initialCanvas, loadImageHelper } from "./canvas_helper";
 
 let AUXILIARY_LINE_SHOW = false;
 let EXTRA_AUXILIARY_LINE_SHOW = false;

@@ -1,6 +1,6 @@
 import * as Joi from "joi";
-import { ALL_TEMPLATES } from "../../service/services/template";
-import { drawArtboard } from "../../service/services/artboard";
+import { ALL_TEMPLATES } from "../../service/artboard/template";
+import { drawArtboard } from "../../utils/canvas/artboard";
 import { Readable } from "stream";
 import { cloneDeep } from "lodash";
 import {

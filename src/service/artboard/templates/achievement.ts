@@ -1,4 +1,4 @@
-import { Artboard, CImage, DText } from "../components";
+import { Artboard, CImage, DText } from "../../../utils/canvas/components";
 import { defaultParams } from "./achievementParams";
 export async function genCardAchievement(
   params: typeof defaultParams = defaultParams,

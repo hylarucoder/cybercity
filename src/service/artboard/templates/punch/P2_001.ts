@@ -1,4 +1,4 @@
-import { Artboard, CImage, DLine, DText, HTransform } from "../../components";
+import { Artboard, CImage, DLine, DText, HTransform } from "../../../../utils/canvas/components";
 import { defaultParams } from "./base";
 
 export async function drawCardPunch_P2_001(

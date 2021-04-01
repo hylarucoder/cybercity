@@ -5,7 +5,7 @@ import {
   DText,
   HTransform,
   DRect,
-} from "../../components";
+} from "../../../../utils/canvas/components";
 import { defaultParams } from "./base";
 import { humanizeWeekday } from "../../../../utils/time";
 

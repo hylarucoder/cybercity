@@ -21,7 +21,7 @@ import {
   genCardAchievementSocial,
 } from "../../service/artboard/templates/achievement";
 import { genCardTeam } from "../../service/artboard/templates/team";
-import { drawArtboard } from "../../service/services/artboard";
+import { drawArtboard } from "../../utils/canvas/artboard";
 import { bufferToStream, getTemplate, makeArtboard } from "./canvas";
 import { tmpls } from "../../service/artboard/templates";
 import { cloneDeep } from "lodash";

@@ -5,7 +5,7 @@ import {
   DRect,
   DText,
   HTransform,
-} from "../../components";
+} from "../../../../utils/canvas/components";
 
 export async function drawCardPunch_P1_001() {
   let defaultBackground =

@@ -1,4 +1,4 @@
-import { Artboard, CImage, DLine, DText, HTransform } from "../../components";
+import { Artboard, CImage, DLine, DText, HTransform } from "../../../../utils/canvas/components";
 import { defaultParams } from "./base";
 import { humanizeWeekday } from "../../../../utils/time";
 

@@ -1,4 +1,4 @@
-import { loadImageHelper } from "../../utils/canvas_helper";
+import { loadImageHelper } from "./canvas_helper";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 
