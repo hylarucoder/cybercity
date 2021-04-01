@@ -1,13 +1,13 @@
 import {
-  Artboard,
+  Poster,
   CImage,
   DLine,
   DRect,
   DText,
   HTransform,
-} from "../../../../utils/canvas/components";
+} from "../../../utils/canvas/components";
 import { defaultParams } from "./base";
-import { humanizeWeekday } from "../../../../utils/time";
+import { humanizeWeekday } from "../../../utils/time";
 
 export async function drawCardPunch_P3_003(
   params: typeof defaultParams = defaultParams,
@@ -32,7 +32,7 @@ export async function drawCardPunch_P3_003(
   const weekday = humanizeWeekday(params.date);
   const time = params.time.slice(0, 5);
 
-  let TMPL = new Artboard(
+  let TMPL = new Poster(
     "TMPL",
     {
       height: canvasHeight,

@@ -1,5 +1,5 @@
 // 邀请图
-import { Artboard, CImage, DText } from "../../../utils/canvas/components";
+import { Poster, CImage, DText } from "../../utils/canvas/components";
 import { defaultParams } from "./shareParams";
 export async function genCardShare(
   params: typeof defaultParams = defaultParams,
@@ -12,7 +12,7 @@ export async function genCardShare(
   let triWidth = canvasWidth / 3;
   let triHeight = canvasWidth / 3;
 
-  let TMPL = new Artboard(
+  let TMPL = new Poster(
     "TMPL",
     {
       height: canvasHeight,

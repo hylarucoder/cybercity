@@ -7,23 +7,27 @@ import {
   Query,
   Render,
 } from "@nestjs/common";
-import { AppService } from "./app.service";
-import { drawCardPunch_P1_001 } from "../../service/artboard/templates/punch/P1_001";
-import { drawCardPunch_P2_001 } from "../../service/artboard/templates/punch/P2_001";
-import { drawCardPunch_P3_001 } from "../../service/artboard/templates/punch/P3_001";
-import { drawCardPunch_P3_002 } from "../../service/artboard/templates/punch/P3_002";
-import { drawCardPunch_P3_003 } from "../../service/artboard/templates/punch/P3_003";
-import { drawCardPunch_P3_004 } from "../../service/artboard/templates/punch/P3_004";
-import { drawCardPunch_P3_005 } from "../../service/artboard/templates/punch/P3_005";
-import { drawCardPunch_P3_006 } from "../../service/artboard/templates/punch/P3_006";
+import { Service } from "./service";
+import { drawCardPunch_P1_001 } from "../../service/poster/punch/P1_001";
+import { drawCardPunch_P2_001 } from "../../service/poster/punch/P2_001";
+import { drawCardPunch_P3_001 } from "../../service/poster/punch/P3_001";
+import { drawCardPunch_P3_002 } from "../../service/poster/punch/P3_002";
+import { drawCardPunch_P3_003 } from "../../service/poster/punch/P3_003";
+import { drawCardPunch_P3_004 } from "../../service/poster/punch/P3_004";
+import { drawCardPunch_P3_005 } from "../../service/poster/punch/P3_005";
+import { drawCardPunch_P3_006 } from "../../service/poster/punch/P3_006";
 import {
   genCardAchievementContinuousDays,
   genCardAchievementSocial,
-} from "../../service/artboard/templates/achievement";
-import { genCardTeam } from "../../service/artboard/templates/team";
+} from "../../service/poster/achievement";
+import { genCardTeam } from "../../service/poster/team";
 import { drawArtboard } from "../../utils/canvas/artboard";
-import { bufferToStream, getTemplate, makeArtboard } from "./canvas";
-import { tmpls } from "../../service/artboard/templates";
+import {
+  bufferToStream,
+  getTemplate,
+  makePoster,
+} from "../../service/poster/canvas";
+import { tmpls } from "../../service/poster";
 import { cloneDeep } from "lodash";
 
 export class DrawCanvasPayload {
@@ -39,9 +43,9 @@ export class DrawTemplateQuery {
   tmpl: any;
 }
 
-@Controller()
+@Controller("api/canvas")
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: Service) {}
 
   @Get()
   getHello(): string {
@@ -49,23 +53,23 @@ export class AppController {
   }
 
   // return file
-  @Post("/api/canvas/draw")
+  @Post("/draw")
   @Header("Content-type", "image/jpeg")
   async drawCanvas(@Body() payload: DrawCanvasPayload): Promise<any> {
-    let buffer = await drawArtboard(payload.artboard, "buffer");
+    const buffer = await drawArtboard(payload.artboard, "buffer");
     return bufferToStream(buffer);
   }
 
-  @Post("/api/canvas/template")
+  @Post("/template")
   async drawTemplate(@Body() payload: DrawTemplatePayload): Promise<any> {
-    let content = payload.content;
-    let tmpl = payload.tmpl;
+    const content = payload.content;
+    const tmpl = payload.tmpl;
     return (await tmpls[tmpl](content)).toBuffer();
   }
 
-  @Get("/api/canvas/template-preview")
+  @Get("/template-preview")
   async drawTemplatePreview(@Query() query: DrawTemplateQuery): Promise<any> {
-    let content = {
+    const content = {
       background:
         "https://tva1.sinaimg.cn/large/006y8mN6gy1g7yzu5fqb3j30im0izqes.jpg",
       qrcode:
@@ -81,16 +85,14 @@ export class AppController {
       beautifulWordsPart: "不管多么崎岖不平",
       //  beautifulWordsPart2: '也比站在原地更接近幸福',
     };
-    console.log("卧槽");
     let template = getTemplate(query.tmpl);
-    console.log("卧槽", template);
     template = cloneDeep(template);
-    let artboard = makeArtboard(template, content);
-    let b64 = await drawArtboard(artboard);
+    const artboard = makePoster(template, content);
+    const b64 = await drawArtboard(artboard);
     return `<img src="${b64}">`;
   }
 
-  @Get("/api/canvas/template-preview-all")
+  @Get("/template-preview-all")
   @Render("canvas_beta_preview.ejs")
   async drawTemplatePreviewAll(): Promise<any> {
     return {
@@ -140,16 +142,6 @@ export class AppController {
           title: "打卡图-v3-p6",
           desc: 1024,
         },
-        // {
-        //   b64: (await genCardShare()).toBase64(),
-        //   title: "分享卡", // need fix
-        //   desc: 1024
-        // },
-        // {
-        //   b64: (await genCardRemedy()).toBase64(),
-        //   title: "补签卡", // need fix
-        //   desc: 1024
-        // },
         {
           b64: (await genCardAchievementSocial()).toBase64(),
           title: "成就图-社交类",
@@ -160,16 +152,6 @@ export class AppController {
           title: "成就图-连续天数",
           desc: 1024,
         },
-        // {
-        //   b64: (await genCardAchievementSolarTerms()).toBase64(),
-        //   title: "成就图-节气类", // 跪了
-        //   desc: 1024
-        // },
-        // {
-        //   b64: (await genCardRegiment()).toBase64(),
-        //   title: "邀请图-打卡团", // 跪了
-        //   desc: 1024
-        // },
         {
           b64: (await genCardTeam()).toBase64(),
           title: "邀请图-打卡小分队",

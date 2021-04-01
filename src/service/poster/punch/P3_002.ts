@@ -1,13 +1,13 @@
 import {
-  Artboard,
+  Poster,
   CImage,
   DLine,
   DRect,
   DText,
   HTransform,
-} from "../../../../utils/canvas/components";
+} from "../../../utils/canvas/components";
 import { defaultParams } from "./base";
-import { humanizeWeekday } from "../../../../utils/time";
+import { humanizeWeekday } from "../../../utils/time";
 
 export async function drawCardPunch_P3_002(
   params: typeof defaultParams = defaultParams,
@@ -36,7 +36,7 @@ export async function drawCardPunch_P3_002(
     ? "http://schedule-1253442168.file.myqcloud.com/upload/file1575280694534.jpg"
     : "http://schedule-1253442168.file.myqcloud.com/upload/file1575355697809.jpg";
 
-  let TMPL = new Artboard(
+  let TMPL = new Poster(
     "TMPL",
     {
       height: canvasHeight,

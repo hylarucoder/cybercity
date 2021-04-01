@@ -1,4 +1,4 @@
-import { Artboard, CImage, DLine, DText, HTransform } from "../../../../utils/canvas/components";
+import { Poster, CImage, DLine, DText, HTransform } from "../../../utils/canvas/components";
 import { defaultParams } from "./base";
 
 export async function drawCardPunch_P2_001(
@@ -11,7 +11,7 @@ export async function drawCardPunch_P2_001(
 
   let triWidth = canvasWidth / 3;
   let triHeight = canvasWidth / 3;
-  let TMPL = new Artboard(
+  let TMPL = new Poster(
     "TMPL",
     {
       height: canvasHeight,

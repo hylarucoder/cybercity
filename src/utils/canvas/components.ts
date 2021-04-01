@@ -508,7 +508,7 @@ function contextReset(ctx) {
   ctx.textAlign = "left";
 }
 
-export class Artboard {
+export class Poster {
   readonly type = "Artboard";
   canvas: any;
 

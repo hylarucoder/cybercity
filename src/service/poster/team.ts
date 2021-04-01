@@ -1,12 +1,11 @@
 // 打卡团
-import { Artboard, CImage, DLine, DRect, DText } from "../../../utils/canvas/components";
+import { Poster, CImage, DLine, DRect, DText } from "../../utils/canvas/components";
 import { defaultParams } from "./teamParams";
-
-export async function genCardRegiment(
+export async function genCardTeam(
   params: typeof defaultParams = defaultParams,
 ) {
   let defaultBackground =
-    "http://staticqc-schedule.yiqishequn.com/img/regmient-invite-card-bg.fe58c23a.png";
+    "http://schedule-1253442168.file.myqcloud.com/upload/file1575275462011.jpg";
   let defaultAvatar =
     "http://img.laiye.com/ajNVdqHZLLCjOXLicIVrSh3OtofBx98A33VZRIxRTZ3pbM0WmuEREicrGONaBvmVKnx6aibQ3cjhr2heCCKjcB4nuEqBT0o74nrQ1AARIzvwzU.jpg";
   let defaultQrcode =
@@ -20,7 +19,7 @@ export async function genCardRegiment(
   let triWidth = canvasWidth / 3;
   let triHeight = canvasWidth / 3;
 
-  let TMPL = new Artboard(
+  let TMPL = new Poster(
     "TMPL",
     {
       height: canvasHeight,
