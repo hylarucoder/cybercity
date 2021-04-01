@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>ruler.js Demo</title>
+    <meta charset="utf-8">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <style>
+        #wrapper {
+            margin-top: 20px;
+            height: <%= height %>px;
+            width: <%= width + 20%>px;
+            border: 1px solid green;
+            position: relative;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/css/ruler.min.css"/>
+</head>
+
+<body>
+X:<input onchange="setPosX1(this.value)"/>
+Y:<input onchange="setPosY1(this.value)"/>
+Scale:<input onchange="setScale1(this.value)"/>
+<button onclick="hideRuler1()">Toggle View</button>
+<button onclick="clearGuides1()">Clear Guides</button>
+<button onclick="storeGuides1()">Store Guides</button>
+<button onclick="setGuides1()">Set Guides</button>
+<button onclick="hideGuides1()">Toggle Guides View</button>
+<button onclick="destory1()">Destroy</button>
+<div id="img" style="position: absolute; margin-top: 37px; margin-left: 17px;"><img src="<%= b64 %>" alt=""></div>
+<div id="wrapper"></div>
+
+<script type="text/javascript" src="/static/js/ruler.min.js"></script>
+<script type="text/javascript">
+    var rul1 = new ruler({container: document.querySelector('#wrapper')});
+    var guides1;
+    var visible1 = true;
+    var visibleGuides1 = true;
+
+    var rul2 = new ruler({container: document.querySelector('#wrapper2')});
+    var guides2;
+    var visible2 = true;
+    var visibleGuides2 = true;
+
+    function setPosX1(val){
+        rul1.api.setPos({x:val});
+    }
+
+    function setPosY1(val){
+        rul1.api.setPos({y:val});
+    }
+
+    function setScale1(val){
+        rul1.api.setScale(val);
+    }
+
+    function hideRuler1(){
+        rul1.api.toggleRulerVisibility(visibleGuides1 = !visibleGuides1);
+    }
+
+    function clearGuides1(){
+        rul1.api.clearGuides();
+    }
+
+    function storeGuides1(){
+        guides1 = rul1.api.getGuides();
+    }
+
+    function setGuides1(){
+        rul1.api.setGuides(guides1);
+    }
+
+    function hideGuides1(){
+        rul1.api.toggleGuideVisibility(visible1 = !visible1);
+    }
+
+    function destory1(){
+        rul1.api.destroy();
+    }
+
+
+    function setPosX2(val){
+        rul2.api.setPos({x:val});
+    }
+
+    function setPosY2(val){
+        rul2.api.setPos({y:val});
+    }
+
+    function setScale2(val){
+        rul2.api.setScale(val);
+    }
+
+    function hideRuler2(){
+        rul2.api.toggleRulerVisibility(visibleGuides2 = !visibleGuides2);
+    }
+
+    function clearGuides2(){
+        rul2.api.clearGuides();
+    }
+
+    function storeGuides2(){
+        guides2 = rul2.api.getGuides();
+    }
+
+    function setGuides2(){
+        rul2.api.setGuides(guides2);
+    }
+
+    function hideGuides2(){
+        rul2.api.toggleGuideVisibility(visible2 = !visible2);
+    }
+
+    function destory2(){
+        rul2.api.destroy();
+    }
+</script>
+</body>
+
+</html>
