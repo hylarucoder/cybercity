@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
+    "lib": ["es2018", "esnext.asynciterable"],
     "module": "commonjs",
     "declaration": true,
-    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "es2018",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./src",
-    "incremental": true
+    "paths": {
+      "@/*": ["*"],
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

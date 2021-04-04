@@ -1,11 +1,9 @@
-import { loadImageHelper } from "./canvas_helper";
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+import { loadImageHelper } from "./compact";
 
 export function drawTextBackground(ctx, txt, x, y, height) {
   ctx.save();
   ctx.fillStyle = "#f50";
-  let width = ctx.measureText(txt).width;
+  const width = ctx.measureText(txt).width;
   ctx.fillRect(x, y, width, height);
   ctx.fillStyle = "#000";
   ctx.fillText(txt, x, y);

@@ -4,10 +4,10 @@ import {
   selectCircleRange,
   selectShapeRadius,
 } from "./utils";
-import { initialCanvas, loadImageHelper } from "./canvas_helper";
+import { initialCanvas, loadImageHelper } from "./compact";
 
-let AUXILIARY_LINE_SHOW = false;
-let EXTRA_AUXILIARY_LINE_SHOW = false;
+const AUXILIARY_LINE_SHOW = false;
+const EXTRA_AUXILIARY_LINE_SHOW = false;
 
 function drawBorderCircle(
   ctx,
@@ -115,7 +115,7 @@ export class DText implements PrimitiveComponent {
     readonly name: string,
     readonly text: string | number,
     style: DTextStyleType,
-    transformMeasuredCoord: boolean = false,
+    transformMeasuredCoord = false,
   ) {
     this.style = Object.assign(
       {
@@ -141,24 +141,22 @@ export class DText implements PrimitiveComponent {
   }
 
   get font(): string {
-    return `${this.style.fontWeight} ${this.style.fontSize}px ${
-      this.style.fontName
-    }`;
+    return `${this.style.fontWeight} ${this.style.fontSize}px ${this.style.fontName}`;
   }
 
   private postDraw(ctx: CanvasRenderingContext2D) {
     if (this.transformMeasuredCoord) {
-      let { x2, y2 } = this.measure(ctx);
+      const { x2, y2 } = this.measure(ctx);
       ctx.setTransform(1, 0, 0, 1, x2, y2);
     }
   }
 
   async draw(ctx: CanvasRenderingContext2D): Promise<void> {
-    let style = this.style;
-    let position = style.position;
+    const style = this.style;
+    const position = style.position;
     this.applyStyle(ctx, style);
-    let width = ctx.measureText(`${this.text}`).width;
-    let height = style.fontSize * 1.5;
+    const width = ctx.measureText(`${this.text}`).width;
+    const height = style.fontSize * 1.5;
     if (AUXILIARY_LINE_SHOW) {
       ctx.save();
       ctx.setLineDash([6]);
@@ -176,10 +174,10 @@ export class DText implements PrimitiveComponent {
       ctx.restore();
     }
     if (style.letterSpacing) {
-      let tmpText = this.text.toString();
-      let textArray = tmpText.split("");
+      const tmpText = this.text.toString();
+      const textArray = tmpText.split("");
       let sx = position.x;
-      textArray.map(item => {
+      textArray.map((item) => {
         ctx.fillText(`${item}`, sx, position.y);
         sx = sx + style.fontSize + style.letterSpacing;
       });
@@ -193,12 +191,12 @@ export class DText implements PrimitiveComponent {
   }
 
   measure(ctx) {
-    let style = this.style;
+    const style = this.style;
     this.applyStyle(ctx, style);
-    let width = ctx.measureText(this.text).width;
-    let height = style.fontSize * 1.5;
-    let transform = ctx.currentTransform;
-    let { e, f } = transform;
+    const width = ctx.measureText(this.text).width;
+    const height = style.fontSize * 1.5;
+    const transform = ctx.currentTransform;
+    const { e, f } = transform;
     return {
       x1: 0,
       y1: 0,
@@ -235,7 +233,7 @@ export class DImage implements PrimitiveComponent {
     readonly name: string,
     readonly src: string,
     style: DImageStyleType,
-    followTransform: boolean = false,
+    followTransform = false,
   ) {
     this.style = Object.assign(
       {
@@ -274,7 +272,7 @@ const defaultLinePosition = {
 interface DLineStyleType {
   readonly position: typeof defaultLinePosition;
   readonly strokeStyle: string;
-  readonly shadow?: Boolean;
+  readonly shadow?: boolean;
   readonly lineWidth: number;
   readonly type: "solid" | "dotted" | "dashed";
 }
@@ -353,7 +351,7 @@ export class DRect implements PrimitiveComponent {
 
   async draw(ctx: CanvasRenderingContext2D): Promise<void> {
     const style = this.style;
-    let pos = style.position;
+    const pos = style.position;
     if (style.radius) {
       selectShapeRadius(
         ctx,
@@ -365,7 +363,7 @@ export class DRect implements PrimitiveComponent {
       );
     }
     ctx.globalAlpha = style.alpha;
-    let grd = ctx.createLinearGradient(0, 0, 170, 0);
+    const grd = ctx.createLinearGradient(0, 0, 170, 0);
     grd.addColorStop(0, "#EEE");
     grd.addColorStop(1, "#FFF");
     // ctx.fillStyle = this.style.fillStyle
@@ -439,11 +437,11 @@ export class CImage implements AdvancedComponent {
     if (this.style.shape === "Rect") {
     }
     if (this.style.shape === "SlicingRect") {
-      let ratio = _image.width / style.width;
-      let sx = 0;
-      let sy = (_image.height - style.height * ratio) / 2;
-      let sWidth = _image.width;
-      let sHeight = _image.height - 2 * sy;
+      const ratio = _image.width / style.width;
+      const sx = 0;
+      const sy = (_image.height - style.height * ratio) / 2;
+      const sWidth = _image.width;
+      const sHeight = _image.height - 2 * sy;
       ctx.drawImage(
         _image,
         sx,
@@ -515,7 +513,7 @@ export class Poster {
   constructor(
     readonly name: string,
     readonly size: typeof DefaultSize,
-    readonly background: string | Boolean,
+    readonly background: string | boolean,
     readonly components: Array<
       AdvancedComponent | PrimitiveComponent | HelperComponent
     >,
@@ -546,7 +544,7 @@ export class Poster {
   }
 
   async draw() {
-    let canvas = await initialCanvas(this.size.width, this.size.height);
+    const canvas = await initialCanvas(this.size.width, this.size.height);
     this.canvas = canvas;
     // @ts-ignore
     const ctx = canvas.getContext("2d");
@@ -579,7 +577,7 @@ export class Poster {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "#000";
     }
-    for (let component of this.components) {
+    for (const component of this.components) {
       if (component.iInterface === "PrimitiveComponent") {
         await component.draw(ctx);
       }

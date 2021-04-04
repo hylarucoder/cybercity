@@ -5,27 +5,25 @@ import {
   DText,
   HTransform,
   DRect,
-} from "../../../utils/canvas/components";
+} from "@/utils/canvas/components";
 import { defaultParams } from "./base";
-import { humanizeWeekday } from "../../../utils/time";
+import { humanizeWeekday } from "@/utils/time";
 
-export async function drawCardPunch_P3_004(
-  params: typeof defaultParams = defaultParams,
-) {
-  let defaultBackground =
+export async function drawCard(params: typeof defaultParams = defaultParams) {
+  const defaultBackground =
     "http://schedule-1253442168.file.myqcloud.com/upload/file1575280847862.jpg";
-  let canvasWidth = 1125;
-  let canvasHeight = 1125;
-  let hWidth = canvasWidth / 2;
-  let hHeight = canvasWidth / 2;
+  const canvasWidth = 1125;
+  const canvasHeight = 1125;
+  const hWidth = canvasWidth / 2;
+  const hHeight = canvasWidth / 2;
 
-  let triWidth = canvasWidth / 3;
-  let triHeight = canvasWidth / 3;
+  const triWidth = canvasWidth / 3;
+  const triHeight = canvasWidth / 3;
 
-  let earlierThanNumber = Math.floor(params.totalEarlierThan / 10000) + "万";
-  let isMorning = params.period == "MORNING";
+  const earlierThanNumber = Math.floor(params.totalEarlierThan / 10000) + "万";
+  const isMorning = params.period == "MORNING";
 
-  let earlierThan = isMorning
+  const earlierThan = isMorning
     ? `比${earlierThanNumber}人起得早`
     : `比${earlierThanNumber}人睡得早`;
   const month = params.date.slice(5, 7);
@@ -34,7 +32,7 @@ export async function drawCardPunch_P3_004(
   const weekday = humanizeWeekday(params.date);
   const time = params.time.slice(0, 5);
 
-  let TMPL = new Poster(
+  const TMPL = new Poster(
     "TMPL",
     {
       height: canvasHeight,

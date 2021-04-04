@@ -218,7 +218,7 @@ function assignCanvasConfig(ctx, ...config) {
   return Object.assign(ctx, mergeCanvasConfigs({}, ...config));
 }
 
-export async function drawArtboard(artboard, exportType = "base64") {
+export async function drawPoster(artboard, exportType = "base64") {
   const width = artboard.size.width;
   const height = artboard.size.height;
 

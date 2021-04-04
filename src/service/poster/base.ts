@@ -2,8 +2,6 @@ export const defaultParams = {
   nickname: "RuntimeError",
   background:
     "http://schedule-1253442168.file.myqcloud.com/upload/file1575272719659.jpg",
-  // 'http://schedule-1253442168.file.myqcloud.com/upload/1575357080319.jpg',
-  // 'http://schedule-1253442168.file.myqcloud.com/upload/1575344672005.jpg',
   backgroundBlurred:
     "http://schedule-1253442168.file.myqcloud.com/upload/1575447020290blur.jpg",
   qrcode:
