@@ -1,18 +1,12 @@
 import fp from "fastify-plugin";
-import * as chalk from "chalk";
 
-export const PluginBlipp = fp(function (fastify, opts, next) {
+export const PluginColorfulRoutes = fp(function (app, opts, next) {
   const routes = [];
-  let i = 0;
-
-  const { blippLog = console.log } = opts;
-
-  fastify.addHook("onRoute", (routeOptions) => {
-    i++;
+  app.addHook("onRoute", (routeOptions) => {
     routes.push({ ...routeOptions });
   });
 
-  fastify.decorate("blipp", () => {
+  app.decorate("printAllRoutes", () => {
     if (routes.length === 0) {
       return;
     }
@@ -24,7 +18,7 @@ export const PluginBlipp = fp(function (fastify, opts, next) {
       a.url !== b.url ? a.url > b.url : a.method > b.method,
     );
 
-    let output = "";
+    app.log.info(`-> routes`)
     for (const route of routes) {
       let methods = [];
       // one route can support more than one method
@@ -33,18 +27,7 @@ export const PluginBlipp = fp(function (fastify, opts, next) {
       } else {
         methods = route.method.sort((a, b) => a > b);
       }
-
-      methods.forEach((method) => {
-        output += `${chalk.green(method.toUpperCase())}\t${route.url.replace(
-          /(?:\:[\w]+|\[\:\w+\])/g,
-          chalk.gray("$&"),
-        )}\n`;
-      });
-    }
-
-    if (routes.length > 0) {
-      blippLog(`🏷️  Routes:`);
-      blippLog(output);
+      app.log.info(`${route.method.toString().padStart(8)} - ${route.url}`)
     }
   });
 
