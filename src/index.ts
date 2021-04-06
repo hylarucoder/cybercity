@@ -1,8 +1,5 @@
 import "reflect-metadata";
 import "module-alias/register";
-// import * as moduleAlias from "module-alias";
-// console.log(__dirname + "/")
-// moduleAlias.addAlias("@/", __dirname + "/");
 
 import { createApp } from "./app";
 
@@ -15,7 +12,6 @@ app.listen(FASTIFY_PORT, (err, address) => {
     console.error(err);
     process.exit(1);
   }
-  console.log(`Server listening at ${address}`);
-  console.log(`🚀  Fastify server running on port ${FASTIFY_PORT}`);
-  app.blipp();
+  app.log.info(`🚀  Server listening at ${address}`);
+  app.printAllRoutes()
 });

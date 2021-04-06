@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Resources
+
+model Province {
+  id       Int      @id @default(autoincrement())
+  code     String   @unique
+  name     String
+  cities   City[]
+  counties County[]
+}
+
+model City {
+  id         Int       @id @default(autoincrement())
+  code       String    @unique
+  name       String
+  province   Province? @relation(fields: [provinceId], references: [id])
+  provinceId Int?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  counties   County[]
+}
+
+model County {
+  id         Int      @id @default(autoincrement())
+  code       String   @unique
+  name       String
+  province   Province @relation(fields: [provinceId], references: [id])
+  provinceId Int
+  city       City     @relation(fields: [cityId], references: [id])
+  cityId     Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// MainBiziness
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId Int?
+
+  invitedByUserId Int?
+  invitedByUser   User?  @relation("UserInvitation", fields: [invitedByUserId], references: [id])
+  invitesUsers    User[] @relation("UserInvitation")
+}
+
+enum UserSex {
+  MALE
+  FAMALE
+  SECRAT
+}
+
+model Profile {
+  id   Int     @id @default(autoincrement())
+  name String?
+  bio  String?
+  sex  UserSex @default(SECRAT)
+  user User?
+}
+
+// System
+
+model SysMenu {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SysUser {
+  id            Int           @id @default(autoincrement())
+  name          String        @unique
+  mobile        String?       @unique
+  avatar        String?
+  birthday      DateTime?
+  email         String?
+  isDenied      Boolean       @default(false)
+  password_hash String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  isAdmin       Boolean       @default(false)
+  SysUserRole   SysUserRole[]
+}
+
+model SysRole {
+  id          Int           @id @default(autoincrement())
+  name        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  SysUserRole SysUserRole[]
+}
+
+model SysUserRole {
+  name      String
+  user      SysUser  @relation(fields: [userId], references: [id])
+  userId    Int
+  role      SysRole  @relation(fields: [roleId], references: [id])
+  roleId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, roleId])
+}
+
+enum SysRoleType {
+  MENU
+  ACTION
+}
+
+model SysPermission {
+  id        Int         @id @default(autoincrement())
+  name      String
+  type      SysRoleType @default(MENU)
+  code      String
+  action    String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model SysRolePermission {
+  id           Int      @id @default(autoincrement())
+  roleId       Int
+  permissionId Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

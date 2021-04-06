@@ -3,47 +3,68 @@ import fastify, { FastifyInstance } from "fastify";
 import PluginStatic from "fastify-static";
 import PluginCors from "fastify-cors";
 import PluginSchedule from "fastify-schedule";
+import { PluginSocketIO } from "./plugins/plugin-socketio";
+import { PluginColorfulRoutes } from "./plugins/plugin-colorful-routes";
+import { PluginDB } from "@/plugins/plugin-db";
 import * as pov from "point-of-view";
 import * as ejs from "ejs";
+import { Socket } from "socket.io";
 
 import { routes as homeRoutes } from "./apps/home/views";
 import { routes as userRoutes } from "./apps/user/views";
 import { routes as canvasRoutes } from "./apps/canvas/views";
-import { PluginSocketIO } from "./plugins/plugin-socketio";
-import { PluginBlipp } from "./plugins/plugin-blipp";
+import { PrismaClient } from "@prisma/client";
 
 // using declaration merging, add your plugin props to the appropriate fastify interfaces
 declare module "fastify" {
   interface FastifyRequest {
     myPluginProp: string;
   }
+
   interface FastifyReply {
     myPluginProp: number;
   }
+
   interface FastifyInstance {
-    blipp: () => void;
-    io: () => void;
+    printAllRoutes: () => void;
+    io: Socket;
+    prisma: PrismaClient;
   }
 }
 
+const initLogger = () => {
+  return {
+    prettyPrint: {
+      colorize: true,
+      translateTime: true,
+      ignore: "hostname",
+    },
+  };
+};
+
 function initStatic(app: FastifyInstance) {
+  app.log.info("初始化静态地址模块");
   app.register(PluginStatic, {
-    root: path.join(__dirname, "public"),
+    root: path.join(__dirname, "../public"),
     prefix: "/",
   });
 }
+
 function initRoutes(app: FastifyInstance) {
-  app.register(PluginBlipp);
+  app.log.info("初始化路由模块");
+  app.register(PluginColorfulRoutes);
   app.register(homeRoutes);
   app.register(userRoutes, { prefix: "/api/user" });
   app.register(canvasRoutes, { prefix: "/api/canvas" });
 }
 
 function initCors(app: FastifyInstance) {
+  app.log.info("初始化Cors");
   app.register(PluginCors);
 }
 
 function initSchedule(app: FastifyInstance) {
+  app.log.info("初始化调度模块");
   app.register(PluginSchedule);
 
   // const task = new AsyncTask(
@@ -62,10 +83,17 @@ function initSchedule(app: FastifyInstance) {
 }
 
 function initSocketIO(app: FastifyInstance) {
+  app.log.info("初始化socketio相关设置");
   app.register(PluginSocketIO);
 }
 
+function initDB(app: FastifyInstance) {
+  app.log.info("初始化db相关设置");
+  app.register(PluginDB);
+}
+
 function initTemplateEngine(app: FastifyInstance) {
+  app.log.info("初始化模板引擎");
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   app.register(pov, {
@@ -76,10 +104,12 @@ function initTemplateEngine(app: FastifyInstance) {
 }
 
 export function createApp(): FastifyInstance {
+  const logger = initLogger();
   const app: FastifyInstance = fastify({
-    logger: true,
+    logger,
   });
   initSocketIO(app);
+  initDB(app);
   initStatic(app);
   initSchedule(app);
   initRoutes(app);

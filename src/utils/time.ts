@@ -16,7 +16,7 @@ export function formatDatetime(datetime) {
   return moment(datetime).format("YYYY-MM-DD HH:mm:ss");
 }
 
-let months = {
+const months = {
   "1": "一月",
   "2": "二月",
   "3": "三月",
@@ -35,22 +35,10 @@ export function humanizeMonth(datetime) {
   return months[moment(datetime).format("M")];
 }
 
-const weekdays = [
-  "星期日",
-  "星期一",
-  "星期二",
-  "星期三",
-  "星期四",
-  "星期五",
-  "星期六",
-];
+const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
 export function formatWeekday(datetime): string {
-  return weekdays[
-    moment(datetime)
-      .toDate()
-      .getDay()
-  ];
+  return weekdays[moment(datetime).toDate().getDay()];
 }
 
 /**
@@ -82,9 +70,5 @@ export function humanizeTime(time) {
 }
 
 export function humanizeWeekday(datetime) {
-  return weekdays[
-    moment(datetime)
-      .toDate()
-      .getDay()
-  ];
+  return weekdays[moment(datetime).toDate().getDay()];
 }

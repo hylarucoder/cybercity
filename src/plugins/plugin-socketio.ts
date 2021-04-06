@@ -2,14 +2,14 @@ import fp from "fastify-plugin";
 import * as socketio from "socket.io";
 
 export const PluginSocketIO = fp(
-  async function (fastify, opts) {
+  async function (app, opts) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    fastify.decorate("io", socketio(fastify.server, opts));
-    fastify.addHook("onClose", (fastify, done) => {
+    app.decorate("io", socketio(app.server, opts));
+    app.addHook("onClose", (app, done) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      fastify.io.close();
+      app.io.close();
       done();
     });
   },
