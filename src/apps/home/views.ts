@@ -8,7 +8,7 @@ export async function routes(bp, opts, next) {
     done();
   });
   bp.get("/", async (req, res) => {
-    res.status(200).send({ data: "index" });
+    res.status(200).send({ hello: "world" });
   });
   bp.get("/ping", async (req, res) => {
     res.status(200).send("pong\n");
