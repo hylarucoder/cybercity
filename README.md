@@ -1,38 +1,11 @@
 ## davinci
 
+An opinioned boilerplate for TypeScript FullStack Development
 
-## Installation
+## Feature
 
-```bash
-yarn
-```
-
-## Running the app
-
-```bash
-# development
-yarn start
-
-# watch mode
-yarn start:dev
-
-# production mode
-yarn start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-yarn test
-
-# e2e tests
-yarn test:e2e
-
-# test coverage
-yarn test:cov
-```
-
-## License
-
-MIT
+1. Battery Included
+2. TypeScript
+3. Hot Reload With Nodeamon
+4. SocketIO
+5. GraphQL with Code First and TypeScript Support
