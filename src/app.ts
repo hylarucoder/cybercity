@@ -103,17 +103,25 @@ function initTemplateEngine(app: FastifyInstance) {
   });
 }
 
-export function createApp(): FastifyInstance {
+type TOption = {
+  type?: "web" | "beat" | "worker";
+};
+
+export function createApp(option: TOption = { type: "web" }): FastifyInstance {
   const logger = initLogger();
   const app: FastifyInstance = fastify({
     logger,
   });
-  initSocketIO(app);
+  if (option.type === "web") {
+    initSocketIO(app);
+    initRoutes(app);
+    initStatic(app);
+    initTemplateEngine(app);
+    initCors(app);
+  }
   initDB(app);
-  initStatic(app);
-  initSchedule(app);
-  initRoutes(app);
-  initTemplateEngine(app);
-  initCors(app);
+  if (option.type === "beat") {
+    initSchedule(app);
+  }
   return app;
 }

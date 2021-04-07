@@ -14,3 +14,7 @@ export const defaultParams = {
   beautifulWordsPart2: "生命从来不喧哗",
   period: "MORNING",
 };
+
+export function test() {
+  console.log("test remote")
+}
