@@ -1,6 +1,6 @@
 import fp from "fastify-plugin";
 import { JobsOptions, Queue } from "bullmq";
-import {FastifyInstance} from "fastify";
+import { FastifyInstance } from "fastify";
 
 const option = {
   connection: {
@@ -16,8 +16,8 @@ export class Celery<T = any, N extends string = string> {
     this.queue = new Queue("BullDefault", option);
     this.app = app;
   }
-  async addJob(name: N, data: T, opts?: JobsOptions, queue = "BullDefault") {
-    this.app.log.info(`${name} - ${data}`);
+  async addJob(data: T, opts?: JobsOptions, name = "BullDefault") {
+    this.app.log.info(`${name} - ${JSON.stringify(data)}`);
     await this.queue.add(name, data, opts);
   }
 }

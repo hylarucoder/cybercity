@@ -25,20 +25,20 @@ function startBeatServer() {
   const app = createApp({
     type: "beat",
   });
-  app.ready((error) => {
+  app.ready(async (error) => {
     app.log.info(BANNER);
     if (error) {
       // eslint-disable-next-line no-console
       console.error(error);
       return false;
     }
-    app.celery.addJob("Add", { color: "blue" });
-    app.celery.addJob("Plus", { colour: "blue" }, { delay: 5000 });
-    app.celery.addJob("BullDefault", { colour: "blue" }, { delay: 5000 });
-    app.celery.addJob("BullDefault", { colour: "blue" }, { delay: 5000 });
-    app.celery.addJob("BullDefault", { colour: "blue" }, { delay: 5000 });
-    app.celery.addJob("BullDefault", { colour: "blue" }, { delay: 5000 });
-    app.celery.queue.close()
+    await app.celery.addJob({ id: "1" });
+    await app.celery.addJob({ id: "2" });
+    await app.celery.addJob({ id: "3" });
+    await app.celery.addJob({ id: "4" });
+    await app.celery.addJob({ id: "5" });
+    await app.celery.addJob({ id: "6" });
+    await app.celery.queue.close()
   });
 }
 
