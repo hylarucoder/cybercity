@@ -6,24 +6,31 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "postinstall": "prisma generate",
+    "postinstall": "yarn db:generate",
     "prebuild": "rimraf dist",
     "format": "prettier --write \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "tap --node-arg=--require=ts-node/register",
-    "start": "nodemon --config nodemon.json src/index.ts",
+    "start": "nodemon --config nodemon.json src/index.ts server",
     "start:debug": "nodemon --config nodemon.json --inspect-brk src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "serve": "node -r ts-node/register src/index.ts serve",
+    "beat": "node -r ts-node/register src/index.ts beat",
+    "worker": "node -r ts-node/register src/index.ts worker",
+    "shell": "node --experimental-repl-await -r ts-node/register src/index.ts shell",
+    "db:generate": "prisma generate",
     "db:save": "prisma migrate dev --create-only --preview-feature",
     "db:migrate": "prisma migrate dev --preview-feature",
     "db:migrate:prod": "prisma migrate deploy --preview-feature",
-    "db:seed": "prisma db seed --preview-feature",
-    "build": "tsc -p tsconfig.json"
+    "db:seed": "prisma db seed --preview-feature"
   },
   "dependencies": {
     "@prisma/client": "2.20.1",
     "@sinclair/typebox": "^0.16.1",
     "bull": "^3.22.0",
+    "bullmq": "^1.15.1",
     "canvas": "^2.7.0",
+    "commander": "^7.2.0",
     "ejs": "^3.1.6",
     "fastify": "^3.14.1",
     "fastify-caching": "^6.1.0",
@@ -79,6 +86,7 @@
   "_moduleAliases": {
     "@/service": "src/service",
     "@/utils": "src/utils",
-    "@/plugins": "src/plugins"
+    "@/plugins": "src/plugins",
+    "@/tasks": "src/tasks"
   }
 }
