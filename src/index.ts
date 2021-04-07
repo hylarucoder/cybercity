@@ -5,7 +5,6 @@ import { Command } from "commander";
 
 import { createApp } from "./app";
 import { initWorker } from "@/tasks/worker";
-import { addJobs } from "@/tasks/queue";
 
 const FASTIFY_PORT = Number(process.env.FASTIFY_PORT) || 3000;
 
@@ -16,6 +15,7 @@ function startServer() {
       console.error(err);
       process.exit(1);
     }
+    app.log.info(BANNER);
     app.log.info(`🚀  Server listening at ${address}`);
     app.printAllRoutes();
   });
@@ -25,12 +25,28 @@ function startBeatServer() {
   const app = createApp({
     type: "beat",
   });
-  addJobs();
+  app.ready((error) => {
+    app.log.info(BANNER);
+    if (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      return false;
+    }
+    app.celery.addJob("Add", { color: "blue" });
+    app.celery.addJob("Plus", { colour: "blue" }, { delay: 5000 });
+    app.celery.addJob("BullDefault", { colour: "blue" }, { delay: 5000 });
+    app.celery.addJob("BullDefault", { colour: "blue" }, { delay: 5000 });
+    app.celery.addJob("BullDefault", { colour: "blue" }, { delay: 5000 });
+    app.celery.addJob("BullDefault", { colour: "blue" }, { delay: 5000 });
+    app.celery.queue.close()
+  });
 }
 
 function startWorker() {
-  const app = createApp();
-  initWorker();
+  const app = createApp({
+    type: "worker",
+  });
+  initWorker(app);
 }
 
 const BANNER = `

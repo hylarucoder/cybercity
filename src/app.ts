@@ -14,6 +14,7 @@ import { routes as homeRoutes } from "./apps/home/views";
 import { routes as userRoutes } from "./apps/user/views";
 import { routes as canvasRoutes } from "./apps/canvas/views";
 import { PrismaClient } from "@prisma/client";
+import {Celery, PluginCelery} from "@/plugins/plugin-celery";
 
 // using declaration merging, add your plugin props to the appropriate fastify interfaces
 declare module "fastify" {
@@ -29,6 +30,7 @@ declare module "fastify" {
     printAllRoutes: () => void;
     io: Socket;
     prisma: PrismaClient;
+    celery: Celery,
   }
 }
 
@@ -92,6 +94,11 @@ function initDB(app: FastifyInstance) {
   app.register(PluginDB);
 }
 
+function initCelery(app: FastifyInstance) {
+  app.log.info("初始化celery相关设置");
+  app.register(PluginCelery);
+}
+
 function initTemplateEngine(app: FastifyInstance) {
   app.log.info("初始化模板引擎");
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -119,6 +126,7 @@ export function createApp(option: TOption = { type: "web" }): FastifyInstance {
     initTemplateEngine(app);
     initCors(app);
   }
+  initCelery(app);
   initDB(app);
   if (option.type === "beat") {
     initSchedule(app);
