@@ -1,19 +1,19 @@
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 
 export function getDateOffset(datetime, days = 0) {
-  return moment(datetime).add(days, "day");
+  return dayjs(datetime).add(days, "day");
 }
 
 export function formatTime(datetime) {
-  return moment(datetime).format("HH:mm:ss");
+  return dayjs(datetime).format("HH:mm:ss");
 }
 
 export function formatDate(datetime) {
-  return moment(datetime).format("YYYY-MM-DD");
+  return dayjs(datetime).format("YYYY-MM-DD");
 }
 
 export function formatDatetime(datetime) {
-  return moment(datetime).format("YYYY-MM-DD HH:mm:ss");
+  return dayjs(datetime).format("YYYY-MM-DD HH:mm:ss");
 }
 
 const months = {
@@ -32,27 +32,27 @@ const months = {
 };
 
 export function humanizeMonth(datetime) {
-  return months[moment(datetime).format("M")];
+  return months[dayjs(datetime).format("M")];
 }
 
 const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
 export function formatWeekday(datetime): string {
-  return weekdays[moment(datetime).toDate().getDay()];
+  return weekdays[dayjs(datetime).toDate().getDay()];
 }
 
 /**
  * 2019-08-07 -> Date()
  */
 export function parseDate(date) {
-  return moment(date);
+  return dayjs(date);
 }
 
 /**
  * 2019-08-07 12:00:00 -> Date()
  */
 export function parseDateTime(datetime) {
-  return moment(datetime);
+  return dayjs(datetime);
 }
 
 /**
@@ -70,5 +70,5 @@ export function humanizeTime(time) {
 }
 
 export function humanizeWeekday(datetime) {
-  return weekdays[moment(datetime).toDate().getDay()];
+  return weekdays[dayjs(datetime).toDate().getDay()];
 }

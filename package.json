@@ -11,7 +11,7 @@
     "format": "prettier --write \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "tap --node-arg=--require=ts-node/register",
-    "start": "nodemon --config nodemon.json src/index.ts server",
+    "start": "nodemon --config nodemon.json src/index.ts serve",
     "start:debug": "nodemon --config nodemon.json --inspect-brk src/index.ts",
     "build": "tsc -p tsconfig.json",
     "serve": "node -r ts-node/register src/index.ts serve",
@@ -29,7 +29,9 @@
     "@sinclair/typebox": "^0.16.1",
     "bull": "^3.22.0",
     "bullmq": "^1.15.1",
+    "class-validator": "^0.13.1",
     "commander": "^7.2.0",
+    "dayjs": "^1.10.4",
     "ejs": "^3.1.6",
     "fastify": "^3.14.1",
     "fastify-caching": "^6.1.0",
@@ -86,6 +88,8 @@
     "@/service": "src/service",
     "@/utils": "src/utils",
     "@/plugins": "src/plugins",
-    "@/tasks": "src/tasks"
+    "@/tasks": "src/tasks",
+    "@/apps": "src/apps",
+    "@/graphql": "src/graphql"
   }
 }

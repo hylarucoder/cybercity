@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from "type-graphql";
 
 @ObjectType({ description: "Object representing cooking recipe" })
-export class Recipe {
+export class TRecipe {
   @Field()
   title: string;
 
