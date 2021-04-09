@@ -1,5 +1,5 @@
 {
-  "name": "davinci",
+  "name": "cybercity",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -26,14 +26,14 @@
   },
   "dependencies": {
     "@prisma/client": "2.20.1",
-    "@sinclair/typebox": "^0.16.1",
+    "@sinclair/typebox": "^0.16.2",
     "bcrypt": "^5.0.1",
     "bullmq": "^1.15.1",
     "class-validator": "^0.13.1",
     "commander": "^7.2.0",
     "dayjs": "^1.10.4",
     "ejs": "^3.1.6",
-    "fastify": "^3.14.1",
+    "fastify": "^3.14.2",
     "fastify-caching": "^6.1.0",
     "fastify-compress": "^3.4.2",
     "fastify-cookie": "^5.3.0",
@@ -47,7 +47,7 @@
     "graphql-query-complexity": "^0.8.0",
     "graphql-tools": "^7.0.4",
     "lodash": "^4.17.21",
-    "mercurius": "^7.3.3",
+    "mercurius": "^7.4.0",
     "moment": "^2.29.1",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
@@ -75,7 +75,7 @@
     "tap": "^15.0.2",
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.2.3",
+    "typescript": "^4.2.4",
     "winston": "^3.3.3"
   },
   "_moduleAliases": {

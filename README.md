@@ -1,4 +1,4 @@
-## davinci
+## CyberCity
 
 An opinioned boilerplate for TypeScript FullStack Development
 
