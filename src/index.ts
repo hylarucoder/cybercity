@@ -6,7 +6,7 @@ import { Command } from "commander";
 import { createApp } from "./app";
 import { initWorker } from "@/tasks/worker";
 
-const FASTIFY_PORT = Number(process.env.FASTIFY_PORT) || 3000;
+const FASTIFY_PORT = Number(process.env.FASTIFY_PORT) || 8888;
 
 function startServer() {
   const app = createApp();

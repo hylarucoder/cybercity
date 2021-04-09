@@ -2,22 +2,23 @@ import * as path from "path";
 import fastify, { FastifyInstance } from "fastify";
 import PluginStatic from "fastify-static";
 import PluginCors from "fastify-cors";
-import PluginSchedule from "fastify-schedule";
 import { PluginSocketIO } from "./plugins/plugin-socketio";
 import { PluginColorfulRoutes } from "./plugins/plugin-colorful-routes";
 import { PluginDB } from "@/plugins/plugin-db";
 import * as pov from "point-of-view";
 import * as ejs from "ejs";
-import { Socket } from "socket.io";
 
 import { routes as adminRoutes } from "./apps/admin/views";
 import { routes as homeRoutes } from "./apps/home/views";
 import { routes as userRoutes } from "./apps/user/views";
 import { routes as canvasRoutes } from "./apps/canvas/views";
-import { PrismaClient } from "@prisma/client";
-import { Celery, PluginCelery } from "@/plugins/plugin-celery";
+import { PluginCelery } from "@/plugins/plugin-celery";
 
 // using declaration merging, add your plugin props to the appropriate fastify interfaces
+import { Socket } from "socket.io";
+import { PrismaClient } from "@prisma/client";
+import { Celery } from "./plugins/plugin-celery";
+
 declare module "fastify" {
   interface FastifyRequest {
     myPluginProp: string;
@@ -69,7 +70,6 @@ function initCors(app: FastifyInstance) {
 
 function initSchedule(app: FastifyInstance) {
   app.log.info("初始化调度模块");
-  app.register(PluginSchedule);
 }
 
 function initSocketIO(app: FastifyInstance) {

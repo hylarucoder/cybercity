@@ -88,7 +88,7 @@ model SysUser {
   birthday      DateTime?
   email         String?
   isDenied      Boolean       @default(false)
-  password_hash String?
+  passwordHashed String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   isAdmin       Boolean       @default(false)

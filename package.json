@@ -19,7 +19,7 @@
     "worker": "node -r ts-node/register src/index.ts worker",
     "shell": "node --experimental-repl-await -r ts-node/register src/index.ts shell",
     "db:generate": "prisma generate",
-    "db:save": "prisma migrate dev --create-only --preview-feature",
+    "db:makeMigrations": "prisma migrate dev --create-only --preview-feature",
     "db:migrate": "prisma migrate dev --preview-feature",
     "db:migrate:prod": "prisma migrate deploy --preview-feature",
     "db:seed": "prisma db seed --preview-feature"
@@ -27,7 +27,7 @@
   "dependencies": {
     "@prisma/client": "2.20.1",
     "@sinclair/typebox": "^0.16.1",
-    "bull": "^3.22.0",
+    "bcrypt": "^5.0.1",
     "bullmq": "^1.15.1",
     "class-validator": "^0.13.1",
     "commander": "^7.2.0",
@@ -41,7 +41,6 @@
     "fastify-jwt": "^2.4.0",
     "fastify-plugin": "^3.0.0",
     "fastify-request-context": "^2.1.3",
-    "fastify-schedule": "^1.0.0",
     "fastify-static": "^4.0.1",
     "fastify-websocket": "^3.1.0",
     "graphql": "^15.5.0",
@@ -57,9 +56,7 @@
     "redis": "^3.1.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "sequelize": "^6.6.2",
     "socket.io": "^4.0.1",
-    "toad-scheduler": "^1.0.2",
     "type-graphql": "^1.1.1"
   },
   "devDependencies": {
@@ -87,6 +84,7 @@
     "@/plugins": "src/plugins",
     "@/tasks": "src/tasks",
     "@/apps": "src/apps",
-    "@/graphql": "src/graphql"
+    "@/graphql": "src/graphql",
+    "@/errors": "src/errors"
   }
 }

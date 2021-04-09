@@ -1,5 +1,6 @@
 import {PrismaClient} from '@prisma/client'
 import {citiesWithProvinceId, provinces} from "./fixture/resources";
+import {hashPassword} from "../src/utils/crypto";
 
 const prisma = new PrismaClient()
 
@@ -33,13 +34,15 @@ async function initAdminAccount() {
         data: {
             name: "admin",
             mobile: "1822222222",
-            isAdmin: true
+            isAdmin: true,
+            passwordHashed: (await hashPassword("admin123456"))
         }
     })
 }
 
 async function main() {
-    // await initCities();
+    await initCities();
+    await initAdminAccount()
 }
 
 main()

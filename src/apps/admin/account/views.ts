@@ -7,7 +7,6 @@ import {
   ObjectType,
   Publisher,
   PubSub,
-  PubSubEngine,
   Query,
   registerEnumType,
   Resolver,
@@ -92,8 +91,21 @@ type NotificationPayload = {
   createdAt: Date;
 };
 
+@ObjectType()
+export class THealthCheck{
+  @Field()
+  ok: boolean;
+}
+
 @Resolver()
 export class ViewAccount {
+  @Query(() => THealthCheck)
+  async healthCheck(): Promise<THealthCheck> {
+    return {
+      ok: true,
+    };
+  }
+
   @Query(() => TProfile)
   async profile(): Promise<TProfile> {
     return {
