@@ -4,7 +4,10 @@ import {
   Field,
   InputType,
   Mutation,
-  ObjectType, PubSub, PubSubEngine,
+  ObjectType,
+  Publisher,
+  PubSub,
+  PubSubEngine,
   Query,
   registerEnumType,
   Resolver,
@@ -43,6 +46,9 @@ export class InputSendNotification {
   @Field()
   @MaxLength(400)
   content: string;
+
+  @Field(() => TDateTime)
+  createdAt: Date;
 }
 
 @ObjectType()
@@ -80,6 +86,12 @@ export class TNotification {
   createdAt: Date;
 }
 
+type NotificationPayload = {
+  id: string;
+  content: string;
+  createdAt: Date;
+};
+
 @Resolver()
 export class ViewAccount {
   @Query(() => TProfile)
@@ -103,11 +115,15 @@ export class ViewAccount {
     };
   }
 
-  @Mutation()
-  async sendNotification(@Arg("data") data: InputSendNotification, @PubSub() pubSub: PubSubEngine) {
-    await pubSub.publish({
-      topic: "su",
-      payload: data as any,
+  @Mutation(() => Boolean)
+  async sendNotification(
+    @Arg("data") data: InputSendNotification,
+    @PubSub("NOTIFICATIONS") publish: Publisher<NotificationPayload>,
+  ) {
+    await publish({
+      id: "id",
+      content: data.content,
+      createdAt: data.createdAt,
     });
   }
 
