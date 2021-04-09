@@ -25,6 +25,22 @@ declare module "fastify" {
     celery: Celery;
   }
 }
+const users = {
+  "Bearer 1": {
+    id: 1,
+    name: "name",
+  }
+}
+
+function getUser(req) {
+  const auth = req.headers.authorization; // Headers can be provided within GraphQL Playground, e.g { "authorization": "alice" }
+  console.log("auth", auth)
+  if (users[auth]) {
+    return users[auth];
+  } else {
+    return null;
+  }
+}
 
 export async function routes(bp: FastifyInstance, opts, next) {
   const schema = await buildSchema({
@@ -38,6 +54,10 @@ export async function routes(bp: FastifyInstance, opts, next) {
   bp.register(mercurius, {
     schema,
     graphiql: "playground",
+    context: (req) => ({
+      ...req,
+      user: getUser(req),
+    }),
   });
 
   bp.addHook("preHandler", function (req, reply, done) {
