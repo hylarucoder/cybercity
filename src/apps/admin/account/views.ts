@@ -63,17 +63,38 @@ export class TLogin {
 export class TProfile {
   @Field()
   id: string;
+
   @Field()
   name: string;
+
+  @Field({ nullable: true })
+  avatar?: string;
+
+  @Field({ nullable: true })
+  createdBy?: string;
+
+  @Field({ nullable: true })
+  email?: string;
+
   @Field(() => TDateTime)
   createdAt: Date;
 
   @Field(() => TDate)
   birthday: Date;
 
-  @Field()
+  @Field({nullable: true})
   token?: string;
 }
+
+enum EnumSexType {
+  MAN,
+  WOMAN,
+  SECRET,
+}
+
+registerEnumType(EnumSexType, {
+  name: "EnumSexType",
+});
 
 @ObjectType()
 export class TNotification {
@@ -92,7 +113,7 @@ type NotificationPayload = {
 };
 
 @ObjectType()
-export class THealthCheck{
+export class THealthCheck {
   @Field()
   ok: boolean;
 }
@@ -124,6 +145,7 @@ export class ViewAccount {
       name: "name",
       birthday: new Date("2018-04-11"),
       createdAt: new Date("2018-04-11"),
+      token: "1",
     };
   }
 
