@@ -14,7 +14,6 @@ generator client {
 
 model Province {
   id       Int      @id @default(autoincrement())
-  code     String   @unique
   name     String
   cities   City[]
   counties County[]
@@ -22,7 +21,6 @@ model Province {
 
 model City {
   id         Int       @id @default(autoincrement())
-  code       String    @unique
   name       String
   province   Province? @relation(fields: [provinceId], references: [id])
   provinceId Int?
@@ -33,7 +31,6 @@ model City {
 
 model County {
   id         Int      @id @default(autoincrement())
-  code       String   @unique
   name       String
   province   Province @relation(fields: [provinceId], references: [id])
   provinceId Int
@@ -57,83 +54,133 @@ model User {
   invitesUsers    User[] @relation("UserInvitation")
 }
 
-enum UserSex {
-  MALE
-  FAMALE
-  SECRAT
+enum EnumUserSex {
+  MAN
+  WOMAN
+  UNKNOWN
 }
 
 model Profile {
-  id   Int     @id @default(autoincrement())
+  id   Int         @id @default(autoincrement())
   name String?
   bio  String?
-  sex  UserSex @default(SECRAT)
+  sex  EnumUserSex @default(UNKNOWN)
   user User?
 }
 
 // System
 
+model SysOption {
+  id          BigInt   @id @default(autoincrement())
+  name        String
+  value       String
+  description String   @default("")
+  serial      Int      @default(100)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum EnumSysMenuType {
+  MENU
+  GROUP
+  BUTTON
+  LINK
+  CUSTOM
+}
+
 model SysMenu {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          BigInt          @id @default(autoincrement())
+  name        String          @unique
+  type        EnumSysMenuType @default(MENU)
+  serial      Int             @default(100)
+  parent      SysMenu         @relation(fields: [parentId], references: [id])
+  parentId    BigInt
+  remark      String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  children    SysMenu[]       @relation("SysMenuToSysMenu")
+  SysRoleMenu SysRoleMenu[]
+}
+
+model SysDept {
+  id       BigInt    @id @default(autoincrement())
+  name     String    @unique
+  parent   SysDept   @relation(fields: [parentId], references: [id])
+  parentId BigInt
+  users    SysUser[]
+  children SysDept[] @relation("SysDeptToSysDept")
 }
 
 model SysUser {
-  id            Int           @id @default(autoincrement())
-  name          String        @unique
-  mobile        String?       @unique
-  avatar        String?
-  birthday      DateTime?
-  email         String?
-  isDenied      Boolean       @default(false)
+  id             BigInt        @id @default(autoincrement())
+  name           String        @unique
+  mobile         String?       @unique
   passwordHashed String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  isAdmin       Boolean       @default(false)
-  SysUserRole   SysUserRole[]
+  salt           String?
+  // 真实信息
+  realname       String?
+  sex            UserSex?      @default(UNKNOWN)
+  avatar         String?
+  birthday       DateTime?
+  email          String?
+  isDenied       Boolean       @default(false)
+  // 职位相关
+  dept           SysDept?      @relation(fields: [deptId], references: [id])
+  deptId         BigInt?
+  title          String?
+  SysUserRole    SysUserRole[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 }
 
 model SysRole {
-  id          Int           @id @default(autoincrement())
-  name        String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  SysUserRole SysUserRole[]
+  id                BigInt              @id @default(autoincrement())
+  name              String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  SysUserRole       SysUserRole[]
+  SysRolePermission SysRolePermission[]
+  SysRoleMenu       SysRoleMenu[]
 }
 
 model SysUserRole {
   name      String
   user      SysUser  @relation(fields: [userId], references: [id])
-  userId    Int
+  userId    BigInt
   role      SysRole  @relation(fields: [roleId], references: [id])
-  roleId    Int
+  roleId    BigInt
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@id([userId, roleId])
 }
 
-enum SysRoleType {
-  MENU
-  ACTION
-}
-
 model SysPermission {
-  id        Int         @id @default(autoincrement())
-  name      String
-  type      SysRoleType @default(MENU)
-  code      String
-  action    String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id                BigInt              @id @default(autoincrement())
+  name              String
+  code              String
+  action            String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  SysRolePermission SysRolePermission[]
 }
 
 model SysRolePermission {
-  id           Int      @id @default(autoincrement())
-  roleId       Int
-  permissionId Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id           BigInt        @id @default(autoincrement())
+  role         SysRole       @relation(fields: [roleId], references: [id])
+  roleId       BigInt
+  permission   SysPermission @relation(fields: [permissionId], references: [id])
+  permissionId BigInt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model SysRoleMenu {
+  id        BigInt   @id @default(autoincrement())
+  role      SysRole  @relation(fields: [roleId], references: [id])
+  roleId    BigInt
+  menu      SysMenu  @relation(fields: [menuId], references: [id])
+  menuId    BigInt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
