@@ -119,7 +119,6 @@ model SysUser {
   salt           String?
   // 真实信息
   realname       String?
-  sex            UserSex?      @default(UNKNOWN)
   avatar         String?
   birthday       DateTime?
   email          String?
