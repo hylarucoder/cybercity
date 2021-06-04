@@ -1,6 +1,6 @@
 import { GraphQLScalarType, Kind } from "graphql";
 import { formatDate, formatDatetime } from "@/utils/time";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 
 export const TDate = new GraphQLScalarType({
   name: "Date",

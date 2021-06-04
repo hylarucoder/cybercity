@@ -1,4 +1,4 @@
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 
 export function getDateOffset(datetime, days = 0) {
   return dayjs(datetime).add(days, "day");

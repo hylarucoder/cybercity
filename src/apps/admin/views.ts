@@ -29,12 +29,12 @@ const users = {
   "Bearer 1": {
     id: 1,
     name: "name",
-  }
-}
+  },
+};
 
 function getUser(req) {
   const auth = req.headers.authorization; // Headers can be provided within GraphQL Playground, e.g { "authorization": "alice" }
-  console.log("auth", auth)
+  console.log("auth", auth);
   if (users[auth]) {
     return users[auth];
   } else {

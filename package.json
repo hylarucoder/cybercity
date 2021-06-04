@@ -1,6 +1,6 @@
 {
   "name": "cybercity",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "",
   "private": true,
@@ -8,16 +8,15 @@
   "scripts": {
     "postinstall": "yarn db:generate",
     "prebuild": "rimraf dist",
-    "format": "prettier --write \\\"src/**/*.ts\\\" \\\"tests/**/*.ts\\\"",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "tap --node-arg=--require=ts-node/register",
-    "start": "nodemon --config nodemon.json src/index.ts serve",
-    "start:debug": "nodemon --config nodemon.json --inspect-brk src/index.ts",
-    "build": "tsc -p tsconfig.json",
-    "serve": "node -r ts-node/register src/index.ts serve",
-    "beat": "node -r ts-node/register src/index.ts beat",
-    "worker": "node -r ts-node/register src/index.ts worker",
-    "shell": "node --experimental-repl-await -r ts-node/register src/index.ts shell",
+    "start": "tsup src/index.ts --watch --onSuccess \"node dist/index.js serve\"",
+    "build": "tsup src/index.ts",
+    "serve": "tsup src/index.ts --watch --onSuccess \"node dist/index.js serve\"",
+    "beat": "tsup src/index.ts --watch --onSuccess \"node dist/index.js beat\"",
+    "worker": "tsup src/index.ts --watch --onSuccess \"node dist/index.js worker\"",
+    "shell": "tsup src/index.ts --watch --onSuccess \"node dist/index.js shell\"",
     "db:generate": "prisma generate",
     "db:makeMigrations": "prisma migrate dev --create-only --preview-feature",
     "db:migrate": "prisma migrate dev --preview-feature",
@@ -25,10 +24,10 @@
     "db:seed": "prisma db seed --preview-feature"
   },
   "dependencies": {
-    "@prisma/client": "2.23.0",
+    "@prisma/client": "2.24.1",
     "@sinclair/typebox": "^0.16.7",
     "bcrypt": "^5.0.1",
-    "bullmq": "^1.29.1",
+    "bullmq": "^1.30.2",
     "class-validator": "^0.13.1",
     "commander": "^7.2.0",
     "dayjs": "^1.10.5",
@@ -60,6 +59,7 @@
     "type-graphql": "^1.1.1"
   },
   "devDependencies": {
+    "@anatine/esbuild-decorators": "^0.2.11",
     "@types/socket.io": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
@@ -67,24 +67,12 @@
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "module-alias": "^2.2.2",
-    "nodemon": "^2.0.7",
-    "pino-pretty": "^5.0.1",
+    "pino-pretty": "^5.0.2",
     "prettier": "^2.3.0",
-    "prisma": "2.23.0",
+    "prisma": "2.24.1",
     "tap": "^15.0.9",
-    "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.9.0",
+    "tsup": "^4.11.2",
     "typescript": "^4.3.2",
     "winston": "^3.3.3"
-  },
-  "_moduleAliases": {
-    "@/service": "src/service",
-    "@/utils": "src/utils",
-    "@/plugins": "src/plugins",
-    "@/tasks": "src/tasks",
-    "@/apps": "src/apps",
-    "@/graphql": "src/graphql",
-    "@/errors": "src/errors"
   }
 }

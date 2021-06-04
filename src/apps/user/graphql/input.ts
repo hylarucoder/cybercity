@@ -2,7 +2,7 @@ import { Field, InputType } from "type-graphql";
 
 @InputType()
 export class AddRecipeInput {
-  @Field()
+  @Field((type) => String)
   title: string;
 
   @Field({ nullable: true })
