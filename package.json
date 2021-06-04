@@ -12,7 +12,7 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "tap --node-arg=--require=ts-node/register",
     "start": "tsup src/index.ts --watch --onSuccess \"node dist/index.js serve\"",
-    "build": "tsup src/index.ts",
+    "build": "tsup src/index.ts --format cjs --no-splitting",
     "serve": "tsup src/index.ts --watch --onSuccess \"node dist/index.js serve\"",
     "beat": "tsup src/index.ts --watch --onSuccess \"node dist/index.js beat\"",
     "worker": "tsup src/index.ts --watch --onSuccess \"node dist/index.js worker\"",
