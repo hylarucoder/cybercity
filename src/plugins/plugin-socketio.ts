@@ -1,5 +1,5 @@
 import fp from "fastify-plugin";
-import * as socketio from "socket.io";
+import socketio from "socket.io";
 
 export const PluginSocketIO = fp(
   async function (app, opts) {

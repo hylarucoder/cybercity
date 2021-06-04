@@ -18,7 +18,7 @@ export const PluginColorfulRoutes = fp(function (app, opts, next) {
       a.url !== b.url ? a.url > b.url : a.method > b.method,
     );
 
-    app.log.info(`-> routes`)
+    app.log.info(`-> routes`);
     for (const route of routes) {
       let methods = [];
       // one route can support more than one method
@@ -27,7 +27,7 @@ export const PluginColorfulRoutes = fp(function (app, opts, next) {
       } else {
         methods = route.method.sort((a, b) => a > b);
       }
-      app.log.info(`${route.method.toString().padStart(8)} - ${route.url}`)
+      app.log.info(`${route.method.toString().padStart(8)} - ${route.url}`);
     }
   });
 

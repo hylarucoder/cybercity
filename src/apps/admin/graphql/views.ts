@@ -5,7 +5,7 @@ import { TRecipe } from "./types";
 @Resolver()
 export class RootResolver {
   @Query((returns) => TRecipe, { nullable: true })
-  async recipe(@Arg("title") title: string): Promise<TRecipe> {
+  async recipe(@Arg("title", () => String) title: string): Promise<TRecipe> {
     return {
       specification: ",",
       description: "Desc 1",
@@ -15,11 +15,8 @@ export class RootResolver {
     };
   }
 
-  @Mutation()
-  addRecipe(
-    @Arg("data") newRecipeData: AddRecipeInput,
-    @Ctx() ctx: any,
-  ): TRecipe {
+  @Mutation((type) => TRecipe)
+  addRecipe(@Arg("data", () => AddRecipeInput) newRecipeData: AddRecipeInput, @Ctx() ctx: any): TRecipe {
     return {
       specification: ",",
       description: "Desc 1",
@@ -33,7 +30,7 @@ export class RootResolver {
 @Resolver()
 export class RootResolver2 {
   @Query((returns) => TRecipe, { nullable: true })
-  async recipe2(@Arg("title") title: string): Promise<TRecipe> {
+  async recipe2(@Arg("title", () => String) title: string): Promise<TRecipe> {
     return {
       specification: ",",
       description: "Desc 1",
@@ -43,11 +40,8 @@ export class RootResolver2 {
     };
   }
 
-  @Mutation()
-  addRecipe2(
-      @Arg("data") newRecipeData: AddRecipeInput,
-      @Ctx() ctx: any,
-  ): TRecipe {
+  @Mutation(() => TRecipe)
+  addRecipe2(@Arg("data", () => AddRecipeInput) newRecipeData: AddRecipeInput, @Ctx() ctx: any): TRecipe {
     return {
       specification: ",",
       description: "Desc 1",

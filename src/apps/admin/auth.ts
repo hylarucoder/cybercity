@@ -16,7 +16,7 @@ export const AuthMiddleware: MiddlewareFn<any> = ({ context, info }, next) => {
   if (depth === 2) {
     // TODO: replace with fastify logging
     console.log(`Logging access: ${username} -> ${info.parentType.name}.${info.fieldName}`);
-    console.log("--->", context.user)
+    console.log("--->", context.user);
     if (!ALLOW_LIST.includes(<string>info.path.key)) {
       if (!context.user) {
         throw new AuthFailed("未登录");

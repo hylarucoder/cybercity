@@ -3,7 +3,7 @@ import { buildSchema } from "type-graphql";
 import { RootResolver } from "./graphql/resolver";
 
 export async function routes(bp, opts, next) {
-  bp.addHook("preHandler", function(req, reply, done) {
+  bp.addHook("preHandler", function (req, reply, done) {
     req.user = "Bob Dylan";
     console.log("bp, user--->");
     done();
@@ -15,16 +15,13 @@ export async function routes(bp, opts, next) {
   bp.get("/ping", async (req, res) => {
     res.status(200).send("pong\n");
   });
-  bp.get("/ws", { websocket: true }, (
-    connection /* SocketStream */,
-    req /* FastifyRequest */,
-  ) => {
+  bp.get("/ws", { websocket: true }, (connection /* SocketStream */, req /* FastifyRequest */) => {
     connection.socket.on("message", (message) => {
       // message === 'hi from client'
       connection.socket.send("hi from server");
     });
   });
-  bp.post("/params/:params", {}, function(request, reply) {
+  bp.post("/params/:params", {}, function (request, reply) {
     console.log(request.body);
     console.log(request.query);
     console.log(request.params);
@@ -45,7 +42,7 @@ export async function routes(bp, opts, next) {
     graphiql: "playground",
   });
 
-  bp.get("/testGraphql", async function(req, reply) {
+  bp.get("/testGraphql", async function (req, reply) {
     const query = "{ add(x: 2, y: 2) }";
     return reply.graphql(query);
   });

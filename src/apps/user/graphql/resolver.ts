@@ -16,10 +16,7 @@ export class RootResolver {
   }
 
   @Mutation()
-  addRecipe(
-    @Arg("data") newRecipeData: AddRecipeInput,
-    @Ctx() ctx: any,
-  ): Recipe {
+  addRecipe(@Arg("data") newRecipeData: AddRecipeInput, @Ctx() ctx: any): Recipe {
     return {
       specification: ",",
       description: "Desc 1",

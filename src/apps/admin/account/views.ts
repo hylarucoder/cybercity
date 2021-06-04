@@ -82,7 +82,7 @@ export class TProfile {
   @Field(() => TDate)
   birthday: Date;
 
-  @Field({nullable: true})
+  @Field({ nullable: true })
   token?: string;
 }
 
