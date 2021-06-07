@@ -1,4 +1,3 @@
-import mercurius from "mercurius";
 import { buildSchema } from "type-graphql";
 import { RootResolver, RootResolver2 } from "./graphql/views";
 import { ViewAccount } from "@/apps/admin/account/views";
@@ -8,6 +7,7 @@ import { Socket } from "socket.io";
 import { PrismaClient } from "@prisma/client";
 import { Celery } from "@/plugins/plugin-celery";
 import { AuthMiddleware } from "@/apps/admin/auth";
+import { ApolloServer } from "apollo-server-fastify";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -42,7 +42,7 @@ function getUser(req) {
   }
 }
 
-export async function routes(bp: FastifyInstance, opts, next) {
+async function createGraphqlHandler() {
   const schema = await buildSchema({
     resolvers: [RootResolver, RootResolver2, ViewAccount],
     scalarsMap: [
@@ -51,22 +51,18 @@ export async function routes(bp: FastifyInstance, opts, next) {
     ],
     globalMiddlewares: [AuthMiddleware],
   });
-  bp.register(mercurius, {
+  const server = new ApolloServer({
+    introspection: true,
+    playground: true,
     schema,
-    graphiql: "playground",
-    context: (req) => ({
-      ...req,
-      user: getUser(req),
-    }),
   });
+  await server.start();
+  return server.createHandler({
+    path: "/graphql",
+  });
+}
 
-  bp.addHook("preHandler", function (req, reply, done) {
-    // TODO: fetch user in restful?
-    done();
-  });
-
-  bp.get("/testGraphql", async function (req, reply) {
-    const query = "{ add(x: 2, y: 2) }";
-    return reply.graphql(query);
-  });
+export async function routes(bp: FastifyInstance, opts, next) {
+  const handler = await createGraphqlHandler();
+  bp.register(handler);
 }
