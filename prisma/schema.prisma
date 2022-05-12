@@ -97,20 +97,14 @@ model SysMenu {
   remark      String?
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
-  children    SysMenu[]       @relation("SysMenuToSysMenu")
   SysRoleMenu SysRoleMenu[]
-  SysMenu     SysMenu?        @relation("SysMenuToSysMenu", fields: [sysMenuId], references: [id])
   sysMenuId   BigInt?
 }
 
 model SysDept {
-  id        BigInt    @id @default(autoincrement())
-  name      String    @unique
-  parentId  BigInt
-  users     SysUser[]
-  children  SysDept[] @relation("SysDeptToSysDept")
-  SysDept   SysDept?  @relation("SysDeptToSysDept", fields: [sysDeptId], references: [id])
-  sysDeptId BigInt?
+  id       BigInt @id @default(autoincrement())
+  name     String @unique
+  parentId BigInt
 }
 
 model SysUser {
@@ -126,7 +120,6 @@ model SysUser {
   email          String?
   isDenied       Boolean       @default(false)
   // 职位相关
-  dept           SysDept?      @relation(fields: [deptId], references: [id])
   deptId         BigInt?
   title          String?
   SysUserRole    SysUserRole[]
